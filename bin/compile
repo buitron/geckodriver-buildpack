@@ -16,7 +16,6 @@ PLATFORM=linux64
 if [ -f $ENV_DIR/GECKODRIVER_VERSION ]; then
   VERSION=$(cat $ENV_DIR/GECKODRIVER_VERSION)
 else
-  topic "Looking up latest geckodriver version"
   LATEST="https://github.com/mozilla/geckodriver/releases"
   VERSION=`curl -s $LATEST | xmllint --html --xpath '(//div[@class = "release-header"])[1]//span[@class = "css-truncate-target"]/text()' - 2>/dev/null | cut -c 2-`
 fi
