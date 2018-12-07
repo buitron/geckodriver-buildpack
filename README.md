@@ -14,16 +14,16 @@ This buildpack installs
 Example usage:
 
 ```shell
-$ heroku create --stack cedar --buildpack http://github.com/buitron/geckodriver-buildpack
+$ heroku create [appname] --buildpack http://github.com/buitron/geckodriver-buildpack
 
 # or if your app is already created:
-$ heroku config:add BUILDPACK_URL=http://github.com/buitron/geckodriver-buildpack
+$ heroku buildpacks:add http://github.com/buitron/geckodriver-buildpack
 
 $ git push heroku master
 ```
 
 
-# Configuring the downloaded version of geckodriver.
+## Configuring the downloaded version of geckodriver.
 
 By default, this buildpack will download the latest release, which is provided
 by [Mozilla](https://github.com/mozilla/geckodriver/releases/).
@@ -39,8 +39,8 @@ If you're using [heroku-buildpack-multi](https://devcenter.heroku.com/articles/u
     LD_LIBRARY_PATH="/usr/local/lib:/usr/lib:/lib:/app/.geckodriver/bin"
 
 
-## Releasing a new version
+<!-- ## Releasing a new version
 
 Make sure you publish this buildpack in the buildpack registry
 
-`heroku buildpacks:publish heroku/geckodriver master`
+`heroku buildpacks:publish heroku/geckodriver master` -->
