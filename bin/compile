@@ -1,17 +1,14 @@
-#!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir> <env-dir>
+#!/bin/sh
 
-set -o errexit
-set -o pipefail
-set -o nounset
-unset GIT_DIR
+set -e
 
 BUILD_DIR=${1:-}
 CACHE_DIR=${2:-}
 ENV_DIR=${3:-}
 
 mkdir -p $CACHE_DIR
-# config
+
+# Config Globals
 PLATFORM=linux64
 
 if [ -f $ENV_DIR/GECKODRIVER_VERSION ]; then
@@ -20,18 +17,17 @@ if [ -f $ENV_DIR/GECKODRIVER_VERSION ]; then
 else
     echo "searching for version"
     LATEST="https://github.com/mozilla/geckodriver/releases"
-    # VERSION=$(curl -s $LATEST | xmllint --htmxpath '(//div[@class = "release-header"])[1]//span[@class = "css-truncate-target"]/text()' - 2>/dev/null | cut -c 2-)
     VERSION=$(grep -om 1 '">v.*' <(curl -s $LATEST) | cut -c 4-9)
     echo "found version ${VERSION}"
 fi
 
 rm -f $CACHE_DIR/error_log.txt
 
+# Buildpack URL
 ARCHIVE_NAME=geckodriver
 FILE_NAME=${ARCHIVE_NAME}-${VERSION}.tar.gz
 BUILDPACK_GECKODRIVER_PACKAGE="https://github.com/mozilla/geckodriver/releases/download/v$VERSION/geckodriver-v$VERSION-$PLATFORM.tar.gz"
 echo "buildpack location is: ${BUILDPACK_GECKODRIVER_PACKAGE}"
-
 
 if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
     echo "-----> Fetching geckodriver package from ${BUILDPACK_GECKODRIVER_PACKAGE}"
