@@ -16,8 +16,8 @@ mkdir -p $CACHE_DIR
 PLATFORM=linux64
 
 if [ -f $ENV_DIR/GECKODRIVER_VERSION ]; then
-    echo "variable defined"
     VERSION=$(cat $ENV_DIR/GECKODRIVER_VERSION)
+    echo "Geckodriver version defined as: v${VERSION}"
 else
     echo "Searching for latest geckodriver version..."
     LATEST="https://github.com/mozilla/geckodriver/releases"
@@ -31,8 +31,6 @@ rm -f $CACHE_DIR/error_log.txt
 ARCHIVE_NAME=geckodriver
 FILE_NAME=${ARCHIVE_NAME}-${VERSION}.tar.gz
 BUILDPACK_GECKODRIVER_PACKAGE="https://github.com/mozilla/geckodriver/releases/download/v$VERSION/geckodriver-v$VERSION-$PLATFORM.tar.gz"
-echo "buildpack location is: ${BUILDPACK_GECKODRIVER_PACKAGE}"
-
 
 if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
     echo "-----> Fetching geckodriver package from ${BUILDPACK_GECKODRIVER_PACKAGE}"
