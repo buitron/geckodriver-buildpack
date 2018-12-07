@@ -19,7 +19,7 @@ if [ -f $ENV_DIR/GECKODRIVER_VERSION ]; then
 else
     echo "searching for version"
     LATEST="https://github.com/mozilla/geckodriver/releases"
-    VERSION=`curl -s $LATEST | xmllint --html --xpath '(//div[@class = "release-header"])[1]//span[@class = "css-truncate-target"]/text()' - 2>/dev/null | cut -c 2-`
+    VERSION=$(curl -s $LATEST | xmllint --html --xpath '(//div[@class = "release-header"])[1]//span[@class = "css-truncate-target"]/text()' - 2>/dev/null | cut -c 2-)
     echo "found version ${VERSION}"
 fi
 
