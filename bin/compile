@@ -23,12 +23,12 @@ fi
 
 ARCHIVE_NAME=geckodriver
 FILE_NAME=${ARCHIVE_NAME}-${VERSION}.tar.gz
-BUIDPACK_GECKODRIVER_PACKAGE="https://github.com/mozilla/geckodriver/releases/download/v$VERSION/geckodriver-v$VERSION-$PLATFORM.tar.gz"
+BUILDPACK_GECKODRIVER_PACKAGE="https://github.com/mozilla/geckodriver/releases/download/v$VERSION/geckodriver-v$VERSION-$PLATFORM.tar.gz"
 
 mkdir -p $CACHE_DIR
 if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
-  echo "-----> Fetching geckodriver package from ${BUIDPACK_GECKODRIVER_PACKAGE}"
-  curl BUIDPACK_GECKODRIVER_PACKAGE -L -o $CACHE_DIR/$FILE_NAME
+  echo "-----> Fetching geckodriver package from ${BUILDPACK_GECKODRIVER_PACKAGE}"
+  curl $BUILDPACK_GECKODRIVER_PACKAGE -L -o $CACHE_DIR/$FILE_NAME
 fi
 
 echo "-----> Extracting geckodriver binaries to ${BUILD_DIR}/vendor/${ARCHIVE_NAME}"
