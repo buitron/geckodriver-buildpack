@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-# bin/detect <build-dir>
+#!/bin/sh
 
 echo "geckodriver"
 exit 0
