@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir> <env-dir>
+
+set -o errexit
+set -o pipefail
+set -o nounset
+unset GIT_DIR
+
+function topic() {
+  echo "-----> $*..."
+}
+
+function indent() {
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+
+# config
+BUILD_DIR=${1:-}
+CACHE_DIR=${2:-}
+ENV_DIR=${3:-}
+
+BIN_DIR=$BUILD_DIR/.geckodriver/bin
+mkdir -p $BIN_DIR
+
+if [ -f $ENV_DIR/GECKODRIVER_VERSION ]; then
+  VERSION=$(cat $ENV_DIR/GECKODRIVER_VERSION)
+else
+  topic "Looking up latest geckodriver version"
+  LATEST="https://github.com/mozilla/geckodriver/releases"
+  VERSION=`curl -s $LATEST | xmllint --html --xpath '(//div[@class = "release-header"])[1]//span[@class = "css-truncate-target"]/text()' - 2>/dev/null | cut -c 2-`
+fi
+
+# Buildpack URL
+indent "Version $VERSION"
+
+topic "Downloading geckodriver v$VERSION"
+TAR_URL="https://github.com/mozilla/geckodriver/releases/download/v$VERSION/geckodriver-v$VERSION-linux64.tar.gz"
+TAR_LOCATION="/tmp/geckodriver.tar.gz"
+
+curl -s -o $TAR_LOCATION $TAR_URL
+tar xzf $TAR_LOCATION -C $BIN_DIR
+rm -f $TAR_LOCATION
+indent "Downloaded"
+
+topic "Creating geckodriver export scripts"
+mkdir -p $BUILD_DIR/.profile.d
+echo "export PATH=\$PATH:\$HOME/.geckodriver/bin" >> $BUILD_DIR/.profile.d/geckodriver.sh
+indent "Created"
