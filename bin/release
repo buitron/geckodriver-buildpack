@@ -3,8 +3,8 @@
 cat << EOF
 ---
 config_vars:
-  PATH: "/app/.heroku/python/bin:/usr/local/bin:/usr/bin:/bin:/app/vendor"
-  LD_LIBRARY_PATH: "/app/.heroku/python/lib:/usr/local/lib:/usr/lib:/lib:/app/vendor"
+  PATH: "/usr/local/bin:/usr/bin:/bin:/app/vendor"
+  LD_LIBRARY_PATH: "/usr/local/lib:/usr/lib:/lib:/app/vendor"
   TMPDIR: "/app/tmp"
 default_process_types:
   console: "vendor/geckodriver"
